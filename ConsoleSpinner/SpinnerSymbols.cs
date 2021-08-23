@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 namespace ConsoleSpinner
@@ -8,45 +7,37 @@ namespace ConsoleSpinner
     {
         public static string Blank => '\u2800'.ToString();
 
-        public static ICollection<string> Get(SpinnerType spinnerType)
+        public static IEnumerable<char> Get(SpinnerType spinnerType)
         {
-            return GetHexCodes(spinnerType)
-                .Select(code => code.ToString("X"))
-                .Select(code => int.Parse(code, NumberStyles.HexNumber))
-                .Select(char.ConvertFromUtf32)
-                .ToList();
-        }
-
-        private static IEnumerable<int> GetHexCodes(SpinnerType spinnerType)
-        {
+            // https://www.unicode.org/charts/PDF/U2800.pdf
             return spinnerType switch
             {
-                SpinnerType.OneDot                 => new[] { 10244, 10242, 10241, 10248, 10256, 10272, 10368, 10304 },
-                SpinnerType.OneDotReverse          => GetHexCodes(SpinnerType.OneDot).Reverse(),
-                SpinnerType.TwoDot                 => new[] { 10246, 10243, 10249, 10264, 10288, 10400, 10432, 10308 },
-                SpinnerType.TwoDotReverse          => GetHexCodes(SpinnerType.TwoDot).Reverse(),
-                SpinnerType.ThreeDot               => new[] { 10310, 10247, 10251, 10265, 10296, 10416, 10464, 10436 },
-                SpinnerType.ThreeDotReverse        => GetHexCodes(SpinnerType.ThreeDot).Reverse(),
-                SpinnerType.FourDot                => new[] { 10311, 10255, 10267, 10297, 10424, 10480, 10468, 10438 },
-                SpinnerType.FourDotReverse         => GetHexCodes(SpinnerType.FourDot).Reverse(),
-                SpinnerType.FiveDot                => new[] { 10319, 10271, 10299, 10425, 10488, 10484, 10470, 10439 },
-                SpinnerType.FiveDotReverse         => GetHexCodes(SpinnerType.FiveDot).Reverse(),
-                SpinnerType.SixDot                 => new[] { 10447, 10335, 10303, 10427, 10489, 10492, 10486, 10471 },
-                SpinnerType.SixDotReverse          => GetHexCodes(SpinnerType.SixDot).Reverse(),
-                SpinnerType.SevenDot               => new[] { 10494, 10487, 10479, 10463, 10367, 10431, 10491, 10493 },
-                SpinnerType.SevenDotReverse        => GetHexCodes(SpinnerType.SevenDot).Reverse(),
-                SpinnerType.OneDotSnake            => new[] { 10241, 10248, 10256, 10242, 10244, 10272, 10368, 10304, 10244, 10272, 10256, 10242 },
-                SpinnerType.TwoDotSnake            => new[] { 10249, 10264, 10258, 10246, 10276, 10400, 10432, 10308, 10276, 10288, 10258, 10243 },
-                SpinnerType.InverseOneDotSnake     => new[] { 10494, 10487, 10479, 10493, 10491, 10463, 10367, 10431, 10491, 10463, 10479, 10493 },
-                SpinnerType.InverseTwoDotSnake     => new[] { 10486, 10471, 10477, 10489, 10459, 10335, 10303, 10427, 10459, 10447, 10477, 10492 },
-                SpinnerType.AlternatingX           => new[] { 10403, 10403, 10403, 10403, 10332, 10332, 10332, 10332 },
-                SpinnerType.AlternatingCorners     => new[] { 10369, 10369, 10369, 10369, 10312, 10312, 10312, 10312 },
-                SpinnerType.RotatingCorners        => new[] { 10312, 10260, 10274, 10369 },
-                SpinnerType.RotatingCornersReverse => GetHexCodes(SpinnerType.RotatingCorners).Reverse(),
-                SpinnerType.PulsingCorners         => new[] { 10369, 10274, 10260, 10312, 10260, 10274 },
-                SpinnerType.PulsingBox             => new[] { 10441, 10441, 10441, 10441, 10294, 10294, 10294, 10294 },
-                SpinnerType.Blinking               => new[] { 10240, 10240, 10240, 10240, 10495, 10495, 10495, 10495 },
-                _                                  => new[] { 10240 } // blank
+                SpinnerType.OneDot                  => new[] { '\u2804', '\u2802', '\u2801', '\u2808', '\u2810', '\u2820', '\u2880', '\u2840' },
+                SpinnerType.OneDotReverse           => Get(SpinnerType.OneDot).Reverse(),
+                SpinnerType.TwoDot                  => new[] { '\u2806', '\u2803', '\u2809', '\u2818', '\u2830', '\u28A0', '\u28C0', '\u2844' },
+                SpinnerType.TwoDotReverse           => Get(SpinnerType.TwoDot).Reverse(),
+                SpinnerType.ThreeDot                => new[] { '\u2846', '\u2807', '\u280B', '\u2819', '\u2838', '\u28B0', '\u28E0', '\u28C4' },
+                SpinnerType.ThreeDotReverse         => Get(SpinnerType.ThreeDot).Reverse(),
+                SpinnerType.FourDot                 => new[] { '\u2847', '\u280F', '\u281B', '\u2839', '\u28B8', '\u28F0', '\u28E4', '\u28C6' },
+                SpinnerType.FourDotReverse          => Get(SpinnerType.FourDot).Reverse(),
+                SpinnerType.FiveDot                 => new[] { '\u284F', '\u281F', '\u283B', '\u28B9', '\u28F8', '\u28F4', '\u28E6', '\u28C7' },
+                SpinnerType.FiveDotReverse          => Get(SpinnerType.FiveDot).Reverse(),
+                SpinnerType.SixDot                  => new[] { '\u28CF', '\u285F', '\u283F', '\u28BB', '\u28F9', '\u28FC', '\u28F6', '\u28E7' },
+                SpinnerType.SixDotReverse           => Get(SpinnerType.SixDot).Reverse(),
+                SpinnerType.SevenDot                => new[] { '\u28FE', '\u28F7', '\u28EF', '\u28DF', '\u287F', '\u28BF', '\u28FB', '\u28FD' },
+                SpinnerType.SevenDotReverse         => Get(SpinnerType.SevenDot).Reverse(),
+                SpinnerType.OneDotSnake             => new[] { '\u2801', '\u2808', '\u2810', '\u2802', '\u2804', '\u2820', '\u2880', '\u2840', '\u2804', '\u2820', '\u2810', '\u2802' },
+                SpinnerType.TwoDotSnake             => new[] { '\u2809', '\u2818', '\u2812', '\u2806', '\u2824', '\u28A0', '\u28C0', '\u2844', '\u2824', '\u2830', '\u2812', '\u2803' },
+                SpinnerType.InverseOneDotSnake      => new[] { '\u28FE', '\u28F7', '\u28EF', '\u28FD', '\u28FB', '\u28DF', '\u287F', '\u28BF', '\u28FB', '\u28DF', '\u28EF', '\u28FD' },
+                SpinnerType.InverseTwoDotSnake      => new[] { '\u28F6', '\u28E7', '\u28ED', '\u28F9', '\u28DB', '\u285F', '\u283F', '\u28BB', '\u28DB', '\u28CF', '\u28ED', '\u28FC' },
+                SpinnerType.AlternatingX            => new[] { '\u28A3', '\u28A3', '\u28A3', '\u28A3', '\u285C', '\u285C', '\u285C', '\u285C' },
+                SpinnerType.AlternatingCorners      => new[] { '\u2881', '\u2881', '\u2881', '\u2881', '\u2848', '\u2848', '\u2848', '\u2848' },
+                SpinnerType.RotatingCorners         => new[] { '\u2848', '\u2814', '\u2822', '\u2881' },
+                SpinnerType.RotatingCornersReverse  => Get(SpinnerType.RotatingCorners).Reverse(),
+                SpinnerType.PulsingCorners          => new[] { '\u2881', '\u2822', '\u2814', '\u2848', '\u2814', '\u2822' },
+                SpinnerType.PulsingBox              => new[] { '\u28C9', '\u28C9', '\u28C9', '\u28C9', '\u2836', '\u2836', '\u2836', '\u2836' },
+                SpinnerType.Blinking                => new[] { '\u2800', '\u2800', '\u2800', '\u2800', '\u28FF', '\u28FF', '\u28FF', '\u28FF' },
+                _                                   => new[] { '\u2800' } // blank
             };
         }
     }

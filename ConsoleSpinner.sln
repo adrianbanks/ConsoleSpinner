@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleSpinner", "ConsoleSpinner\ConsoleSpinner.csproj", "{896D4D76-E227-49A7-9FFB-BA97C61872EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleSpinner.Demo", "ConsoleSpinner.Demo\ConsoleSpinner.Demo.csproj", "{E8FB6758-9A29-41CA-9D48-105D8B61074D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{896D4D76-E227-49A7-9FFB-BA97C61872EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{896D4D76-E227-49A7-9FFB-BA97C61872EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{896D4D76-E227-49A7-9FFB-BA97C61872EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{896D4D76-E227-49A7-9FFB-BA97C61872EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8FB6758-9A29-41CA-9D48-105D8B61074D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8FB6758-9A29-41CA-9D48-105D8B61074D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8FB6758-9A29-41CA-9D48-105D8B61074D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8FB6758-9A29-41CA-9D48-105D8B61074D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

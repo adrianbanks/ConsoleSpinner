@@ -10,6 +10,8 @@ namespace ConsoleSpinner
         private readonly SpinnerType _spinnerType;
         private readonly int _intervalDurationInMilliseconds;
 
+        public bool InsertPrecedingSpace { get; set; } = true;
+
         public ConsoleSpinner(SpinnerType spinnerType, int intervalDurationInMilliseconds = 100)
         {
             _spinnerType = spinnerType;
@@ -34,6 +36,12 @@ namespace ConsoleSpinner
                     foreach (var symbol in symbols)
                     {
                         Console.SetCursorPosition(currentX, currentY);
+
+                        if (InsertPrecedingSpace)
+                        {
+                            Console.Write(" ");
+                        }
+
                         Console.Write(symbol);
                         Thread.Sleep(_intervalDurationInMilliseconds);
                     }
@@ -67,6 +75,12 @@ namespace ConsoleSpinner
                     foreach (var symbol in symbols)
                     {
                         Console.SetCursorPosition(currentX, currentY);
+
+                        if (InsertPrecedingSpace)
+                        {
+                            Console.Write(" ");
+                        }
+
                         Console.Write(symbol);
                         await Task.Delay(_intervalDurationInMilliseconds, CancellationToken.None);
                     }

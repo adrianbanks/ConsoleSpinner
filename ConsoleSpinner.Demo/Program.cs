@@ -15,7 +15,7 @@ namespace ConsoleSpinner.Demo
                 var tokenSource = new CancellationTokenSource();
                 tokenSource.CancelAfter(TimeSpan.FromSeconds(6));
 
-                Console.Write($"{spinnerType} ");
+                Console.Write($"{spinnerType}");
                 // spinner.Write(tokenSource.Token);
                 await spinner.WriteAsync(tokenSource.Token);
 

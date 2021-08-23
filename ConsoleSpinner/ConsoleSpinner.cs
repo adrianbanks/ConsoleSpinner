@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,93 +7,65 @@ namespace ConsoleSpinner
 {
     public sealed class ConsoleSpinner
     {
-        private readonly SpinnerType _spinnerType;
+        private readonly ICollection<char> _symbols;
         private readonly int _intervalDurationInMilliseconds;
 
         public bool InsertPrecedingSpace { get; set; } = true;
 
         public ConsoleSpinner(SpinnerType spinnerType, int intervalDurationInMilliseconds = 100)
         {
-            _spinnerType = spinnerType;
+            _symbols = SpinnerSymbols.Get(spinnerType);
             _intervalDurationInMilliseconds = intervalDurationInMilliseconds;
         }
 
         public void Write(CancellationToken cancellationToken)
         {
-            var originalEncoding = Console.OutputEncoding;
-            var originalCursorVisible = Console.CursorVisible;
+            using var currentConsole = new ConsoleSettings();
 
-            try
+            while (!cancellationToken.IsCancellationRequested)
             {
-                Console.OutputEncoding = Encoding.UTF8;
-                Console.CursorVisible = false;
-                var currentX = Console.CursorLeft;
-                var currentY = Console.CursorTop;
-                var symbols = SpinnerSymbols.Get(_spinnerType);
-
-                while (!cancellationToken.IsCancellationRequested)
+                foreach (var symbol in _symbols)
                 {
-                    foreach (var symbol in symbols)
-                    {
-                        Console.SetCursorPosition(currentX, currentY);
-
-                        if (InsertPrecedingSpace)
-                        {
-                            Console.Write(" ");
-                        }
-
-                        Console.Write(symbol);
-                        Thread.Sleep(_intervalDurationInMilliseconds);
-                    }
-
-                    Console.SetCursorPosition(currentX, currentY);
-                    Console.Write(SpinnerSymbols.Blank);
+                    WriteSymbol(currentConsole.X, currentConsole.Y, symbol);
+                    Thread.Sleep(_intervalDurationInMilliseconds);
                 }
-            }
-            finally
-            {
-                Console.OutputEncoding = originalEncoding;
-                Console.CursorVisible = originalCursorVisible;
+
+                WriteBlank(currentConsole.X, currentConsole.Y);
             }
         }
 
         public async Task WriteAsync(CancellationToken cancellationToken)
         {
-            var originalEncoding = Console.OutputEncoding;
-            var originalCursorVisible = Console.CursorVisible;
+            using var currentConsole = new ConsoleSettings();
 
-            try
+            while (!cancellationToken.IsCancellationRequested)
             {
-                Console.OutputEncoding = Encoding.UTF8;
-                Console.CursorVisible = false;
-                var currentX = Console.CursorLeft;
-                var currentY = Console.CursorTop;
-                var symbols = SpinnerSymbols.Get(_spinnerType);
-
-                while (!cancellationToken.IsCancellationRequested)
+                foreach (var symbol in _symbols)
                 {
-                    foreach (var symbol in symbols)
-                    {
-                        Console.SetCursorPosition(currentX, currentY);
-
-                        if (InsertPrecedingSpace)
-                        {
-                            Console.Write(" ");
-                        }
-
-                        Console.Write(symbol);
-                        await Task.Delay(_intervalDurationInMilliseconds, CancellationToken.None);
-                    }
-
-                    Console.SetCursorPosition(currentX, currentY);
-                    Console.Write(SpinnerSymbols.Blank);
+                    WriteSymbol(currentConsole.X, currentConsole.Y, symbol);
+                    await Task.Delay(_intervalDurationInMilliseconds, CancellationToken.None);
                 }
+
+                WriteBlank(currentConsole.X, currentConsole.Y);
             }
-            finally
+        }
+
+        private void WriteSymbol(int x, int y, char symbol)
+        {
+            Console.SetCursorPosition(x, y);
+
+            if (InsertPrecedingSpace)
             {
-                Console.OutputEncoding = originalEncoding;
-                Console.CursorVisible = originalCursorVisible;
+                Console.Write(" ");
             }
+
+            Console.Write(symbol);
+        }
+
+        private static void WriteBlank(int x, int y)
+        {
+            Console.SetCursorPosition(x, y);
+            Console.Write(SpinnerSymbols.Blank);
         }
     }
 }
